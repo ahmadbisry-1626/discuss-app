@@ -14,12 +14,19 @@ import {
 import { FaNewspaper } from "react-icons/fa6";
 import { createTopic } from "@/actions/create-topic";
 import { useState } from "react";
+import { useFormState } from "react-dom";
+import FormButton from "./common/FormButton";
 import Image from "next/image";
 
 
 const CreateForm = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [success, setSuccess] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const [formState, action] = useFormState(createTopic, {
+        errors: {}
+    });
 
     return (
         <>
@@ -34,57 +41,50 @@ const CreateForm = () => {
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior="inside" backdrop="opaque" size="xl">
                 <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">Create a Topic</ModalHeader>
-                            <form action={createTopic}>
-                                <ModalBody>
-                                    <Input
-                                        name="name"
-                                        label="Name"
-                                        placeholder="Enter your topic name"
-                                        size="lg" color="success"
-                                        variant="bordered"
-                                    />
-                                    <Textarea
-                                        name="description"
-                                        label="Description"
-                                        placeholder="Enter your description"
-                                        rows={4}
-                                        className="mt-4"
-                                        size="lg"
-                                        color="success"
-                                        variant="bordered" />
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button
-                                        type="submit"
-                                        color="success"
-                                        className="text-gray-50"
-                                        size="lg"
-                                        onPress={onClose}
-                                        onClick={() => setSuccess(true)}>
-                                        Create Topic
-                                    </Button>
-                                </ModalFooter>
-                            </form>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
+                    <>
+                        <ModalHeader className="flex flex-col gap-1">Create a Topic</ModalHeader>
+                        <form action={action}>
+                            <ModalBody>
+                                <Input
+                                    name="name"
+                                    label="Name"
+                                    placeholder="Enter your topic name"
+                                    size="lg" color="success"
+                                    variant="bordered"
+                                    isInvalid={!!formState.errors.name}
+                                    errorMessage={formState.errors.name?.join(", ")}
+                                />
+                                <Textarea
+                                    name="description"
+                                    label="Description"
+                                    placeholder="Describe your topic"
+                                    rows={4}
+                                    className="mt-4"
+                                    size="lg"
+                                    color="success"
+                                    variant="bordered"
+                                    isInvalid={!!formState.errors.description}
+                                    errorMessage={formState.errors.description?.join(", ")} />
 
+                                {formState.errors._form && (
+                                    <div className="text-red-500 w-full flex justify-center items-center">
+                                        <span className="">{formState.errors._form.join(", ")}</span>
+                                    </div>
+                                )}
+                            </ModalBody>
+                            <ModalFooter>
+                                {/* <Button
+                                    type="submit"
+                                    color="success"
+                                    className="text-gray-50"
+                                    size="lg">
+                                    Create Topic
+                                </Button> */}
 
-            <Modal isOpen={success}>
-                <ModalContent>
-                    <ModalBody className="py-6">
-                        <div className="flex flex-col gap-4 items-center justify-center">
-                            <Image src='/images/check.gif' alt="" width={100} height={100} />
-                            <h1 className="text-2xl font-bold text-center">Topic Created <span className="text-green-500">Successfully!</span></h1>
-                        </div>
-                        <Button color="success" onClick={() => setSuccess(false)} className="mt-4 text-gray-50" size="lg">
-                            Close
-                        </Button>
-                    </ModalBody>
+                                <FormButton>Create Topic</FormButton>
+                            </ModalFooter>
+                        </form>
+                    </>
                 </ModalContent>
             </Modal>
         </>

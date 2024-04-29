@@ -2,7 +2,9 @@ import React from 'react'
 
 const TopicShow = () => {
   return (
-    <div>TopicShow</div>
+    <div className='min-h-screen flex justify-center items-center'>
+      TopicShow
+    </div>
   )
 }
 
