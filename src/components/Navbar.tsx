@@ -12,6 +12,8 @@ import { PiWechatLogoLight } from 'react-icons/pi'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { FaGithubAlt } from 'react-icons/fa6'
 import { AiOutlineLoading } from 'react-icons/ai'
+import { RxHamburgerMenu } from 'react-icons/rx'
+import MobileNav from './MobileNav'
 
 const Navbar = () => {
     const session = useSession()
@@ -35,7 +37,7 @@ const Navbar = () => {
 
                 <Input
                     placeholder='Type to search..'
-                    className='max-w-[350px]'
+                    className='max-w-[350px] lg:block hidden'
                     variant='underlined'
                     color='success'
                     startContent={
@@ -45,7 +47,7 @@ const Navbar = () => {
                 />
 
                 {session.status === 'loading' ? (
-                    <div className='flex items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 transition duration-200 px-4 py-2 w-[250px]'>
+                    <div className='flex max-md:hidden items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 transition duration-200 px-4 py-2 w-[250px]'>
                         <div className='flex items-center gap-4'>
                             <Skeleton className='p-[2px] border-2 rounded-full'>
                                 <Skeleton className='w-[40px] h-[40px] rounded-full' />
@@ -66,7 +68,7 @@ const Navbar = () => {
                         </button>
                     </div>
                 ) : session.data?.user ? (
-                    <div className='flex items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 hover:border-green-500 transition duration-200 px-4 py-2 w-[250px]'>
+                    <div className='flex max-md:hidden items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 hover:border-green-500 transition duration-200 px-4 py-2 w-[250px]'>
                         <div className='flex items-center gap-4'>
                             <div className='p-[2px] border-2 border-green-500 rounded-full'>
                                 <Image src={`${session.data.user.image}`} alt='' width={40} height={40} className='rounded-full' />
@@ -100,7 +102,7 @@ const Navbar = () => {
                 ) : (
                     <Button
                         type='submit'
-                        className='bg-green-500 text-gray-50 rounded-full px-8 py-6 border-2 border-green-500 hover:bg-transparent hover:text-green-500 flex items-center justify-center'
+                        className='bg-green-500 md:flex hidden text-gray-50 rounded-full px-8 py-6 border-2 border-green-500 hover:bg-transparent hover:text-green-500 items-center justify-center'
                         onClick={handleSignIn} isDisabled={isLoading}>
                         {isLoading ?
                             <>
@@ -119,6 +121,8 @@ const Navbar = () => {
                         }
                     </Button>
                 )}
+
+                <MobileNav />
             </div>
         </nav>
     )

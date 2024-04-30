@@ -14,8 +14,8 @@ const CardPostItems = () => {
                     <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum, quod! Voluptatibus corrupti error aspernatur animi perspiciatis odio quo accusamus repellendus?</p>
                 </div>
 
-                <div className="flex items-center justify-between">
-                    <div className='flex gap-6'>
+                <div className="flex items-end md:items-center justify-between">
+                    <div className='flex max-md:flex-col gap-6'>
                         <div className='flex items-center gap-3'>
                             <FaRegUser className='w-4 h-4 text-green-600' />
                             <span className='text-gray-700 tracking-wide'>Arif Bustomi</span>
