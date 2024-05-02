@@ -1,11 +1,13 @@
 import CardPostItems from "@/components/CardPostItems";
 import CardTopicItems from "@/components/CardTopicItems";
 import CreateForm from "@/components/CreateForm";
+import { db } from "@/db";
 import { Input } from "@nextui-org/react";
 import { BiSearchAlt } from "react-icons/bi";
 import { SiApostrophe } from "react-icons/si";
 
-export default function Home() {
+export default async function Home() {
+  const topic = await db.topic.findMany()
 
   return (
     <div className='min-h-screen wrapper flex lg:flex-row flex-col-reverse max-md:items-center justify-center w-full gap-14 md:pt-40 pt-32'>
@@ -42,8 +44,10 @@ export default function Home() {
             Recent Topics
           </h3>
 
-          <div className='flex flex-col gap-2 text-gray-100 ml-4'>
-            <CardTopicItems />
+          <div className='flex flex-wrap gap-2 text-green-500'>
+            {topic.map((topicList) => (
+              <CardTopicItems key={topicList.id} topicList={topicList}/>
+            ))}
           </div>
         </div>
       </div>

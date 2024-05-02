@@ -8,7 +8,7 @@ import { db } from "@/db"
 import { redirect } from "next/navigation"
 import paths from "@/path"
 import { revalidatePath } from "next/cache"
-
+ 
 const createTopicSchema = z.object({
     name: z
         .string()

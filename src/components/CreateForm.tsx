@@ -13,16 +13,12 @@ import {
 } from "@nextui-org/react";
 import { FaNewspaper } from "react-icons/fa6";
 import { createTopic } from "@/actions/create-topic";
-import { useState } from "react";
 import { useFormState } from "react-dom";
 import FormButton from "./common/FormButton";
-import Image from "next/image";
 
 
 const CreateForm = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [success, setSuccess] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
 
     const [formState, action] = useFormState(createTopic, {
         errors: {}
