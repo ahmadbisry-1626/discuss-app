@@ -8,8 +8,12 @@ import { topicListProps } from '@/interfaces'
 import { useFormState } from 'react-dom'
 import { createPost } from '@/actions/create-post'
 
-const CreatePost = ({ topic }: { topic: topicListProps | null }) => {
-    const [formState, action] = useFormState(createPost, {
+interface CreatePostProps {
+    slug: string
+}
+
+const CreatePost = ({ slug }: CreatePostProps) => {
+    const [formState, action] = useFormState(createPost.bind(null, slug), {
         errors: {}
     })
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -62,7 +66,7 @@ const CreatePost = ({ topic }: { topic: topicListProps | null }) => {
                                 <FormButton>Create Post</FormButton>
                                 <span className='text-center text-[14px] text-gray-500'>
                                     You're gonna create a post on
-                                    <span className='font-semibold capitalize'> {topic?.slug}</span> topic
+                                    <span className='font-semibold capitalize'> {slug}</span> topic
                                 </span>
                             </ModalFooter>
                         </form>

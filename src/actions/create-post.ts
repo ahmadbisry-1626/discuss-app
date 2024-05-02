@@ -1,7 +1,12 @@
 "use server"
 
 import { auth } from "@/auth"
+import { db } from "@/db"
 import { CreatePostFormState } from "@/interfaces"
+import paths from "@/path"
+import { Post } from "@prisma/client"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { z } from "zod"
 
 const createPostSchema = z.object({
@@ -9,7 +14,7 @@ const createPostSchema = z.object({
     content: z.string().min(10)
 })
 
-export async function createPost(formState: CreatePostFormState, formData: FormData): Promise<CreatePostFormState> {
+export async function createPost(slug: string, formState: CreatePostFormState, formData: FormData): Promise<CreatePostFormState> {
     const result = createPostSchema.safeParse({
         title: formData.get('title'),
         content: formData.get('content')
@@ -22,15 +27,53 @@ export async function createPost(formState: CreatePostFormState, formData: FormD
     }
 
     const session = await auth()
-    if(!session || !session.user) {
+    if (!session || !session.user) {
         return {
             errors: {
-                _form : ['You must be logged in to create a post']
+                _form: ['You must be logged in to create a post']
             }
         }
     }
 
-    return {
-        errors: {}
+    const topic = await db.topic.findFirst({
+        where: { slug }
+    })
+
+    if (!topic) {
+        return {
+            errors: {
+                _form: ['Topic not found']
+            }
+        }
     }
+
+    let post: Post
+    try {
+        post = await db.post.create({
+            data: {
+                title: result.data.title,
+                content: result.data.content,
+                userId: session.user.id,
+                topicId: topic.id
+            }
+        })
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            return {
+                errors: {
+                    _form: [err.message]
+                }
+            }
+        } else {
+            return {
+                errors: {
+                    _form: ['An error occurred']
+                }
+            }
+        }
+    }
+
+    revalidatePath(paths.topicShowPath(slug))
+    redirect(paths.postShowPath(slug, post.id)) 
+
 }

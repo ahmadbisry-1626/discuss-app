@@ -3,11 +3,13 @@ import CardTopicItems from "@/components/CardTopicItems";
 import CreateForm from "@/components/CreateForm";
 import { db } from "@/db";
 import { Input } from "@nextui-org/react";
+import { parse } from "path";
 import { BiSearchAlt } from "react-icons/bi";
 import { SiApostrophe } from "react-icons/si";
 
-export default async function Home() {
+export default async function Home(id: string) {
   const topic = await db.topic.findMany()
+  const posts = await db.post.findMany()
 
   return (
     <div className='min-h-screen wrapper flex lg:flex-row flex-col-reverse max-md:items-center justify-center w-full gap-14 md:pt-40 pt-32'>
@@ -32,7 +34,9 @@ export default async function Home() {
           />
         </div>
         <div className='flex flex-col gap-4'>
-          <CardPostItems />
+          {posts.map((postItem) => (
+            <CardPostItems key={postItem.id} postItem={postItem}/>
+          ))}
         </div>
       </div>
 
