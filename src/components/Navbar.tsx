@@ -26,7 +26,7 @@ const Navbar = () => {
 
 
     return (
-        <nav className='w-full bg-gray-100 border-b-2 fixed top-0 z-10'>
+        <nav className='w-full bg-gray-100 border-b-2 fixed top-0 z-20'>
             <div className='wrapper flex justify-between items-center'>
                 <div className='flex gap-2 items-center'>
                     <PiWechatLogoLight className='w-12 h-12 text-green-500' />
@@ -68,7 +68,7 @@ const Navbar = () => {
                         </button>
                     </div>
                 ) : session.data?.user ? (
-                    <div className='flex max-md:hidden items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 hover:border-green-500 transition duration-200 px-4 py-2 w-[250px]'>
+                    <div className='flex max-md:hidden items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 hover:border-green-500 transition duration-200 px-4 py-2 gap-10'>
                         <div className='flex items-center gap-4'>
                             <div className='p-[2px] border-2 border-green-500 rounded-full'>
                                 <Image src={`${session.data.user.image}`} alt='' width={40} height={40} className='rounded-full' />

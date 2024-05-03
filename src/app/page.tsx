@@ -1,15 +1,21 @@
 import CardPostItems from "@/components/CardPostItems";
+import CardPostItemsSkeleton from "@/components/CardPostItemsSkeleton";
 import CardTopicItems from "@/components/CardTopicItems";
 import CreateForm from "@/components/CreateForm";
 import { db } from "@/db";
 import { Input } from "@nextui-org/react";
-import { parse } from "path";
 import { BiSearchAlt } from "react-icons/bi";
 import { SiApostrophe } from "react-icons/si";
 
 export default async function Home(id: string) {
   const topic = await db.topic.findMany()
-  const posts = await db.post.findMany()
+  const posts = await db.post.findMany({
+    include: {
+      topic: { select: { slug: true } },
+      user: { select: { name: true } },
+      _count: { select: { comments: true } }
+    }
+  })
 
   return (
     <div className='min-h-screen wrapper flex lg:flex-row flex-col-reverse max-md:items-center justify-center w-full gap-14 md:pt-40 pt-32'>
@@ -34,9 +40,15 @@ export default async function Home(id: string) {
           />
         </div>
         <div className='flex flex-col gap-4'>
-          {posts.map((postItem) => (
-            <CardPostItems key={postItem.id} postItem={postItem}/>
-          ))}
+          {posts.map((postItem) => {
+            const topicSlug = postItem.topic.slug
+            const user = postItem.user.name
+            const comments = postItem._count.comments
+
+            return (
+              <CardPostItems key={postItem.id} postItem={postItem} topicSlug={topicSlug} user={user} comments={comments} />
+            )
+          })}
         </div>
       </div>
 
@@ -50,7 +62,7 @@ export default async function Home(id: string) {
 
           <div className='flex flex-wrap gap-2 text-green-500'>
             {topic.map((topicList) => (
-              <CardTopicItems key={topicList.id} topicList={topicList}/>
+              <CardTopicItems key={topicList.id} topicList={topicList} />
             ))}
           </div>
         </div>

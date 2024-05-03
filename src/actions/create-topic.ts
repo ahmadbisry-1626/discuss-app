@@ -8,7 +8,7 @@ import { db } from "@/db"
 import { redirect } from "next/navigation"
 import paths from "@/path"
 import { revalidatePath } from "next/cache"
- 
+
 const createTopicSchema = z.object({
     name: z
         .string()
@@ -69,4 +69,47 @@ export async function createTopic(formState: CreateTopicFormState, formData: For
 
     revalidatePath('/')
     redirect(paths.topicShowPath(topic.slug))
+}
+
+export async function editTopic(id: string, formState: CreateTopicFormState, formData: FormData): Promise<CreateTopicFormState> {
+    const result = createTopicSchema.safeParse({
+        name: formData.get('editname'),
+        description: formData.get('editdesc')
+    })
+
+    if (!result.success) {
+        return {
+            errors: result.error.flatten().fieldErrors
+        }
+    }
+
+    let topic: Topic;
+    try {
+        topic = await db.topic.update({
+            where: { id },
+            data: {
+                slug: result.data.name,
+                description: result.data.description
+            }
+        })
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            return {
+                errors: {
+                    _form: [err.message]
+                }
+            }
+        } else {
+            return {
+                errors: {
+                    _form: ['An unknown error occurred']
+                }
+            }
+        }
+    }
+
+    revalidatePath('/')
+    return {
+        errors: {}
+    }
 }
