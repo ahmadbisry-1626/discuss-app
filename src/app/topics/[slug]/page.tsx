@@ -96,7 +96,7 @@ const TopicShow = async (props: TopicShowprops) => {
             )}
           </div>
 
-          <div className='flex flex-wrap gap-2 text-gray-50 capitalize'>
+          <div className='flex flex-wrap gap-2 text-gray-50'>
             <p>{topic?.description}</p>
           </div>
         </div>

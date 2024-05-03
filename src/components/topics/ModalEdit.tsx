@@ -55,7 +55,7 @@ function ModalEdit({ slug, desc, topicId }: { slug: string, desc: string, topicI
                                 )}
                             </ModalBody>
                             <ModalFooter>
-                                <FormButton>Create Topic</FormButton>
+                                <FormButton>Edit Topic</FormButton>
                             </ModalFooter>
                         </form>
                     </>
