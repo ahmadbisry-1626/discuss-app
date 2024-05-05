@@ -1,21 +1,33 @@
+
 import CardPostItems from "@/components/CardPostItems";
-import CardPostItemsSkeleton from "@/components/CardPostItemsSkeleton";
 import CardTopicItems from "@/components/CardTopicItems";
 import CreateForm from "@/components/CreateForm";
+import HomePostShowLoading from "@/components/HomePostShowLoading";
+import SearchInput from "@/components/SearchInput";
+import TopicShowLoading from "@/components/topics/TopicShowLoading";
 import { db } from "@/db";
-import { Input } from "@nextui-org/react";
-import { BiSearchAlt } from "react-icons/bi";
+import { Suspense } from "react";
 import { SiApostrophe } from "react-icons/si";
 
 export default async function Home(id: string) {
   const topic = await db.topic.findMany()
   const posts = await db.post.findMany({
+    orderBy: [
+      {
+        comments: {
+          _count: 'desc'
+        }
+      }
+    ],
     include: {
       topic: { select: { slug: true } },
       user: { select: { name: true } },
       _count: { select: { comments: true } }
-    }
+    },
+    take: 5
   })
+
+  // const sortedPosts = posts.sort((a, b) => b._count.comments - a._count.comments)
 
   return (
     <div className='min-h-screen wrapper flex lg:flex-row flex-col-reverse max-md:items-center justify-center w-full gap-14 md:pt-40 pt-32'>
@@ -28,16 +40,9 @@ export default async function Home(id: string) {
             </h1>
           </div>
 
-          <Input
-            placeholder='Type to search..'
-            className='max-w-[350px] md:block max-md:hidden lg:hidden'
-            variant='underlined'
-            color='success'
-            startContent={
-              <BiSearchAlt className='w-6 h-6 text-green-500' />
-            }
-            size='md'
-          />
+          <Suspense>
+            <SearchInput style="max-w-[350px] md:block max-md:hidden lg:hidden" />
+          </Suspense>
         </div>
         <div className='flex flex-col gap-4'>
           {posts.map((postItem) => {
@@ -46,7 +51,9 @@ export default async function Home(id: string) {
             const comments = postItem._count.comments
 
             return (
-              <CardPostItems key={postItem.id} postItem={postItem} topicSlug={topicSlug} user={user} comments={comments} />
+              <Suspense fallback={<HomePostShowLoading />} key={postItem.id}>
+                <CardPostItems key={postItem.id} postItem={postItem} topicSlug={topicSlug} user={user} comments={comments} />
+              </Suspense>
             )
           })}
         </div>
@@ -62,7 +69,9 @@ export default async function Home(id: string) {
 
           <div className='flex flex-wrap gap-2 text-green-500'>
             {topic.map((topicList) => (
-              <CardTopicItems key={topicList.id} topicList={topicList} />
+              <Suspense fallback={<TopicShowLoading topic={topicList} />} key={topicList.id}>
+                <CardTopicItems key={topicList.id} topicList={topicList} />
+              </Suspense>
             ))}
           </div>
         </div>

@@ -3,9 +3,8 @@
 import { useFormState } from "react-dom";
 import { useEffect, useRef, useState } from "react";
 import { Textarea, Button } from "@nextui-org/react";
-import * as actions from "@/actions";
 import FormButton from "../common/FormButton";
-import { createComment } from "@/actions/create-comment";
+import createComment from "@/actions/create-comment";
 
 interface CommentCreateFormProps {
   postId: string;
@@ -52,14 +51,14 @@ export default function CommentCreateForm({
           </div>
         ) : null}
 
-        <FormButton>Create Comment</FormButton>
+        <FormButton>Send Comment</FormButton>
       </div>
     </form>
   );
 
   return (
-    <div>
-      <Button size="sm" variant="light" onClick={() => setOpen(!open)}>
+    <div className="flex flex-col gap-4 w-full max-w-4xl">
+      <Button size="sm" variant="light" onClick={() => setOpen(!open)} className="w-max">
         Reply
       </Button>
       {open && form}

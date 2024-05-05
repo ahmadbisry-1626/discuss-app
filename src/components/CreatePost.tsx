@@ -4,9 +4,8 @@ import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader
 import React from 'react'
 import { FaNewspaper } from 'react-icons/fa6'
 import FormButton from './common/FormButton'
-import { topicListProps } from '@/interfaces'
 import { useFormState } from 'react-dom'
-import { createPost } from '@/actions/create-post'
+import createPost from '@/actions/create-post'
 
 interface CreatePostProps {
     slug: string
@@ -64,10 +63,10 @@ const CreatePost = ({ slug }: CreatePostProps) => {
                             </ModalBody>
                             <ModalFooter className='flex flex-col gap-2'>
                                 <FormButton>Create Post</FormButton>
-                                <span className='text-center text-[14px] text-gray-500'>
+                                {/* <span className='text-center text-[14px] text-gray-500'>
                                     You're gonna create a post on
                                     <span className='font-semibold capitalize'> {slug}</span> topic
-                                </span>
+                                </span> */}
                             </ModalFooter>
                         </form>
                     </>

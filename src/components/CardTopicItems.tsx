@@ -2,9 +2,9 @@ import { topicListProps } from '@/interfaces'
 import paths from '@/path'
 import Link from 'next/link'
 import React from 'react'
-import { FaCircle } from 'react-icons/fa6'
 
-const CardTopicItems = ({ topicList }: { topicList: topicListProps }) => {
+export default async function CardTopicItems({ topicList }: { topicList: topicListProps }) {
+    await new Promise(resolve => setTimeout(resolve, 2500))
 
     return (
         <div className='flex gap-2 items-center'>
@@ -17,5 +17,3 @@ const CardTopicItems = ({ topicList }: { topicList: topicListProps }) => {
         </div>
     )
 }
-
-export default CardTopicItems

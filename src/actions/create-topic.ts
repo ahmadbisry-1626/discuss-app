@@ -113,3 +113,11 @@ export async function editTopic(id: string, formState: CreateTopicFormState, for
         errors: {}
     }
 }
+
+export default async function deleteTopic(id: string) {
+    await db.topic.delete({
+        where: { id }
+    })
+
+    redirect('/')
+}

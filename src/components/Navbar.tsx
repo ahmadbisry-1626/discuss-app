@@ -1,19 +1,18 @@
 "use client"
 
-import { signIn, signOut } from '@/actions'
-import { Button, Input, Skeleton } from '@nextui-org/react'
+import { Button, Skeleton } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
-import { BiSearchAlt } from 'react-icons/bi'
+import React, { Suspense, useState } from 'react'
 import { IoSettingsOutline } from 'react-icons/io5'
 import { PiWechatLogoLight } from 'react-icons/pi'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { FaGithubAlt } from 'react-icons/fa6'
 import { AiOutlineLoading } from 'react-icons/ai'
-import { RxHamburgerMenu } from 'react-icons/rx'
 import MobileNav from './MobileNav'
+import SearchInput from './SearchInput'
+import signIn, { signOut } from '@/actions'
 
 const Navbar = () => {
     const session = useSession()
@@ -35,16 +34,9 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                <Input
-                    placeholder='Type to search..'
-                    className='max-w-[350px] lg:block hidden'
-                    variant='underlined'
-                    color='success'
-                    startContent={
-                        <BiSearchAlt className='w-6 h-6 text-green-500' />
-                    }
-                    size='md'
-                />
+                <Suspense>
+                    <SearchInput style="max-w-[400px] lg:block hidden" />
+                </Suspense>
 
                 {session.status === 'loading' ? (
                     <div className='flex max-md:hidden items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 transition duration-200 px-4 py-2 w-[250px]'>

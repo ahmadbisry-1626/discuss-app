@@ -1,7 +1,6 @@
 import { PostWithData } from '@/db/queries/posts';
 import paths from '@/path';
 import { Divider, Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
-import type { Post, User, Topic } from '@prisma/client';
 import Link from 'next/link';
 import { FaCircle, FaRegUser } from 'react-icons/fa6';
 import { FiEdit3 } from 'react-icons/fi';
@@ -9,12 +8,13 @@ import { IoEllipsisHorizontalCircleSharp } from 'react-icons/io5';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import { PiWechatLogoLight } from 'react-icons/pi';
 
-
 interface PostListProps {
   fetchData: () => Promise<PostWithData[]>
 }
 
 export default async function PostList({ fetchData }: PostListProps) {
+  await new Promise(resolve => setTimeout(resolve, 2500))
+
   const posts = await fetchData()
 
   const renderedPosts = posts.map((post) => {
@@ -32,10 +32,6 @@ export default async function PostList({ fetchData }: PostListProps) {
           </h3>
 
           <p>{post.content}</p>
-
-          {/* <Link href={paths.topicShowPath(slug)} className='px-3 py-1 rounded-full bg-gradient-to-r from-green-500 to-teal-600'>
-                        <span className='text-[14px] text-gray-50'>{slug}</span>
-                </Link> */}
         </Link>
 
         <div className="flex items-end md:items-center justify-between">

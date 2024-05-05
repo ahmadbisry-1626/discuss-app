@@ -1,4 +1,4 @@
-import { signIn, signOut } from '@/actions';
+import signIn, { signOut } from '@/actions';
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Skeleton } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -30,7 +30,7 @@ const MobileNav = () => {
             } else {
                 html.classList.remove('overflow-hidden');
             }
-        }, [isOpen]);
+        });
     };
     useEffectScroll();
 
@@ -102,7 +102,7 @@ const MobileNav = () => {
                                 </button>
                             </div>
                         ) : session.data?.user ? (
-                            <div className={`flex items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 hover:border-green-500 transition duration-200 px-4 py-2 w-full ${isOpen ? 'scale-100 opacity-100' : 'scale-75 opacity-20'} transition-all !duration-1000`}>
+                            <div className={`flex items-center justify-between rounded-[12px] bg-gray-100 border-2 border-gray-300 hover:border-green-500 transition duration-200 px-4 py-2 translate-y-16 w-full ${isOpen ? 'scale-100 opacity-100' : 'scale-75 opacity-20'} transition-all !duration-1000`}>
                                 <div className='flex items-center gap-4'>
                                     <div className='p-[2px] border-2 border-green-500 rounded-full'>
                                         <Image src={`${session.data.user.image}`} alt='' width={40} height={40} className='rounded-full' />

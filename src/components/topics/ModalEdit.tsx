@@ -5,7 +5,7 @@ import React from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import FormButton from '../common/FormButton'
 import { useFormState } from 'react-dom'
-import { createTopic, editTopic } from '@/actions/create-topic'
+import { editTopic } from '@/actions/create-topic'
 
 function ModalEdit({ slug, desc, topicId }: { slug: string, desc: string, topicId: string }) {
     const [formState, action] = useFormState(editTopic.bind(null, topicId), {

@@ -4,7 +4,7 @@ import { auth } from "@/auth"
 import { db } from "@/db"
 import { CreatePostFormState } from "@/interfaces"
 import paths from "@/path"
-import { Post } from "@prisma/client"
+import type { Post } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
@@ -13,8 +13,8 @@ const createPostSchema = z.object({
     title: z.string().min(3),
     content: z.string().min(10)
 })
-
-export async function createPost(slug: string, formState: CreatePostFormState, formData: FormData): Promise<CreatePostFormState> {
+ 
+export default async function createPost(slug: string, formState: CreatePostFormState, formData: FormData): Promise<CreatePostFormState> {
     const result = createPostSchema.safeParse({
         title: formData.get('title'),
         content: formData.get('content')

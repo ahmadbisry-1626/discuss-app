@@ -1,11 +1,13 @@
 import paths from '@/path'
-import { Post } from '@prisma/client'
+import type { Post } from '@prisma/client'
 import Link from 'next/link'
 import React from 'react'
 import { FaCircle, FaRegUser } from 'react-icons/fa6'
 import { PiWechatLogoLight } from 'react-icons/pi'
 
-const CardPostItems = ({ postItem, topicSlug, user, comments }: { postItem: Post, topicSlug: string, user: string | null, comments: number }) => {
+export default async function CardPostItems ({ postItem, topicSlug, user, comments }: { postItem: Post, topicSlug: string, user: string | null, comments: number }) {
+    await new Promise(resolve => setTimeout(resolve, 2500))
+
     return (
         <div className="w-full flex flex-col gap-8 p-6 bg-gray-100 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] rounded-[12px]">
             <Link href={paths.postShowPath(topicSlug, postItem.id)} className='flex flex-col gap-2'>
@@ -39,5 +41,3 @@ const CardPostItems = ({ postItem, topicSlug, user, comments }: { postItem: Post
         </div>
     )
 }
-
-export default CardPostItems

@@ -18,7 +18,7 @@ interface CreateCommentFormState {
   success?: boolean;
 }
 
-export async function createComment(
+export default async function createComment(
   { postId, parentId }: { postId: string; parentId?: string },
   formState: CreateCommentFormState,
   formData: FormData
